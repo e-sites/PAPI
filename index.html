@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<link rel="dns-prefetch" href="//netdna.bootstrapcdn.com">
+		<link rel="dns-prefetch" href="//www.google-analytics.com">
+		<title>PAPI: Postcode API jQuery plugin</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="author" title="Boye Oomens" href="http://www.linkedin.com/in/boyeoomens">
+		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="http://frontend.e-sites.nl/css/prettify.css">
+		<link rel="stylesheet" href="http://getbootstrap.com/assets/css/pygments-manni.css">
+		<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+		<script>var _gaq=_gaq||[];_gaq.push(['_setAccount','UA-22990606-1'],['_setDomainName', '.jussay.in'],['_trackPageview'],['_trackPageLoadTime']);(function(b,c){var a=b.createElement(c),d=b.getElementsByTagName(c)[0];a.async=a.src='//www.google-analytics.com/ga.js';d.parentNode.insertBefore(a,d)})(document,'script');</script>
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/dev/papi">PAPI</a>
+				<div class="nav-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="#">Home</a></li>
+						<li><a href="http://www.linkedin.com/in/boyeoomens">About</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="container" style="padding-top:60px;">
+			<h1>PAPI</h1>
+			<blockquote>
+				<p>A lightweight jQuery plugin that makes working with the <a href="http://www.postcodeapi.nu/" target="_blank">Postcode API</a> easy as pie.</p>
+			</blockquote>
+			<p>
+				<em>"A jQuery plugin that's called PAPI?"</em> That's right, what's in a name huh. This plugin 
+			</p>
+			<h3>The Postcode API</h3>
+			<p>
+				The Postcode API is developed by <a href="http://www.freshheads.com/" target="_blank">Freshheads</a>. Check out the docs: <a href="http://api.postcodeapi.nu/docs/" target="_blank">http://api.postcodeapi.nu/docs/</a>
+			</p>
+			<h3>Why PAPI?</h3>
+			<p>Well, for starters, because:</p>
+			<ul>
+				<li>it's lightweight (only 0.5kb minified w/ gzip) and developed with high performance in mind;</li>
+				<li>it caches results internally, so no unecessary API calls;</li>
+				<li>it validates the actual zipcode that is used to fetch the data;</li>
+				<li>it handles responses internally so you can focus on processing the data in the available callbacks;</li>
+				<li>it comes with a fully fledged static API (<code>$.papi</code>), so you can write your custom logic as well</li>
+			</ul>
+			<hr>
+			<h2>Getting started</h2>
+			<p>First and foremost, include the plugin as such (or lazy-load it):</p>
+<pre class="prettyprint">
+&lt;script src="jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="jquery.papi.min.js"&gt;&lt;/script&gt;
+</pre>
+			<h3>Setting the API key</h3>
+			<p>
+				It's important you authorize yourself by setting the API key. Use the static <code>.setApiKey</code> method for this:
+			</p>
+<pre class="prettyprint">$.papi.setApiKey('930654c3382ff89252affc02b485ae094f97de6d');</pre>
+			<hr>
+			<h2>Docs</h2>
+			<p>
+				Basically, there are two routes you can follow. First, for the lazy folk, you can simply call the plugin on an element and pass some options. <br>
+				This way the whole process of fetching and handling the data will be done for you.
+			</p>
+			<p>
+				Also, you can use the static API to handle the data yourself, this gives you more freedom and possibilities.
+			</p>
+			<h3>Plugin</h3>
+			<p>
+				Example plugin call:
+			</p>
+<pre class="prettyprint">$('#housenr').papi({
+    source: $('#zipcode4')[0],
+    event: 'change',
+    placeholders: {
+        street: $('#street4')[0],
+        town: $('#town4')[0]
+    }
+});</pre>
+			<h4>Options</h4>
+			<table class="table table-bordered table-striped bs-table">
+				<colgroup>
+					<col class="col-lg-1">
+					<col class="col-lg-1">
+					<col class="col-lg-7">
+				</colgroup>
+				<thead>
+				<tr>
+					<th>Property</th>
+					<th>Type</th>
+					<th>Description</th>
+				</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<code>source</code>
+						</td>
+						<td><code>null</code></td>
+						<td>
+							Indicates a successful or positive action
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<code>event</code>
+						</td>
+						<td><code>String</code></td>
+						<td>Event type that triggers the actual lookup</td>
+					</tr>
+					<tr>
+						<td>
+							<code>placeholders</code>
+						</td>
+						<td><code>Object</code></td>
+						<td>
+							The given and will be mapped against available properties that are returned by the API <br>
+							Available placeholders are: <br>
+							latitude, longitude, municipality, postcode, province, street, town, house_number, x, y, bag.</code>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<code>bag</code>
+						</td>
+						<td><code>Boolean</code></td>
+						<td>
+							This will add an additional querystring (<code>?view=bag</code>) to the call and will return <a href="http://bag.vrom.nl/" target="_blank">BAG</a> info (if available)<br>
+							Available placeholders are: <br>
+							latitude, longitude, municipality, postcode, province, street, town, house_number, x, y, bag.</code>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<h3>Static API</h3>
+			<h4><code>.setApiKey(apikey)</code></h4>
+			<p>Guess what, it sets the API key for authorization :-)</p>
+			<h4><code>.lookup(zipcode, [houseNr], [bag])</code></h4>
+			<p>Initiates the actual <code>GET</code> request to the API.</p>
+			<h4><code>.ok(callback)</code></h4>
+			<p>
+				When all went good, this callback will be invoked. <br>
+				The data will be available through the first argument. The <code>this</code> context will point to the <code>$.papi</code> object.
+			</p>
+			<h4><code>.notfound(callback)</code></h4>
+			<p>
+				When no results are found, the API will return a 404 and this callback will be invoked.
+			</p>
+			<h4><code>.setValue(key, placeholder)</code></h4>
+			<p>
+				Fills the given placeholder with available data
+			</p>
+			<h4><code>.setValues(placeholders)</code></h4>
+			<p>
+				Fills all placeholders with available data.
+			</p>
+			<h4><code>.isValidZipcode(zipcode)</code></h4>
+			<p>Small helper to see if the given zipcode is valid</p>
+			<hr>
+			<h2>Examples</h2>
+			<p>
+				Below some examples on how PAPI can be implemented:
+			</p>
+			<div class="row clearfix">
+				<div class="col-6 col-lg-6">
+					<form method="POST" id="example-1" class="form-inline">
+						<fieldset>
+							<legend>Most basic usage</legend>
+							<p>
+								Just enter a Dutch zipcode below and tab to the next element (i.e. trigger the onchange).
+							</p>
+							<div class="form-group">
+								<label for="zipcode1">Dutch zipcode</label>
+								<input type="text" class="form-control" id="zipcode1" placeholder="e.g. 4814 DC">
+							</div>
+							<div class="form-group">
+								<input type="text" name="street" class="form-control" id="street1" readonly="readonly" placeholder="Street">
+								<input type="text" name="town" class="form-control" id="town1" readonly="readonly" placeholder="Town">
+							</div>
+						</fieldset>
+					</form>
+				</div>
+  				<div class="col-6 col-lg-6">
+  					<h4>Code example</h4>
+<pre class="prettyprint">$('#zipcode1').papi({
+    event: 'change',
+    placeholders: {
+        street: $('#street1')[0],
+        town: $('#town1')[0]
+    }
+});</pre>
+  				</div>
+			</div>
+			<hr>
+			<div class="row clearfix">
+				<div class="col-6 col-lg-6">
+					<form method="POST">
+						<fieldset>
+							<legend>Simple lookup based on click</legend>
+							<p>
+								Enter a Dutch zipcode and click on the 'Do lookup' button.
+							</p>
+							<div class="form-group">
+								<label for="zipcode1">Dutch zipcode</label>
+								<input type="text" class="form-control" id="zipcode2" placeholder="e.g. 4814 DC">
+							</div>
+							<div class="form-group">
+								<label for="street2">Street</label>
+								<input type="text" name="street" class="form-control" id="street2" readonly="readonly" placeholder="Street">
+							</div>
+							<div class="form-group">
+								<label for="town2">Town</label>
+								<input type="text" name="town" class="form-control" id="town2" readonly="readonly" placeholder="Town">
+							</div>
+							<div class="alert alert-info" id="notfound" hidden></div>
+							<button type="button" id="example-2" class="btn btn-default">Do lookup</button>
+						</fieldset>
+					</form>
+				</div>
+  				<div class="col-6 col-lg-6">
+  					<h4>Code example</h4>
+<pre class="prettyprint">// listen for click, do a lookup and handle data
+$('#example-2').on('click', function (e) {
+    $.papi
+        .lookup( $('#zipcode2')[0].value )
+        .ok(function (data) {
+            this
+                .setValue('street', $('#street2')[0])
+                .setValue('town', $('#town2')[0]);
+        })
+        .notfound(function (data) {
+            $('#notfound').html('Nothing found...');
+        });
+});</pre>
+  				</div>
+			</div>
+			<hr>
+			<div class="row clearfix">
+				<div class="col-6 col-lg-6">
+					<form method="POST" id="example-3">
+						<fieldset>
+							<legend>Simple lookup on change (and logging the response)</legend>
+							<div class="form-group">
+								<label for="zipcode3">Dutch zipcode</label>
+								<input type="text" class="form-control" id="zipcode3" placeholder="e.g. 4814 DC">
+							</div>
+						</fieldset>
+					</form>
+				</div>
+  				<div class="col-6 col-lg-6">
+  					<h4>Code example</h4>
+<pre class="prettyprint">$('#zipcode3').on('change', function () {
+    $.papi
+        .lookup( this.value )
+        .ok(function (data) {
+            $('#output')
+                .html( JSON.stringify(data) ).removeAttr('hidden');
+        })
+        .notfound(function (data) {
+            $('#output')
+                .html( JSON.stringify(data) ).removeAttr('hidden');
+        });
+});</pre>
+<pre class="prettyprint" id="output" hidden></pre>
+  				</div>
+			</div>
+			<hr>	
+			<div class="row clearfix">
+				<div class="col-6 col-lg-6">
+					<form method="POST" id="example-4">
+						<fieldset>
+							<legend>Simple lookup based on house number</legend>
+							<div class="form-group">
+								<label for="zipcode4">Dutch zipcode</label>
+								<input type="text" class="form-control" id="zipcode4" placeholder="e.g. 4814 DC">
+							</div>
+							<div class="form-group">
+								<label for="housenr">House number</label>
+								<input type="text" class="form-control" id="housenr" placeholder="e.g. 29">
+							</div>
+							<div class="form-group">
+								<input type="text" name="street" class="form-control" id="street4" readonly="readonly" placeholder="Street">
+								<input type="text" name="town" class="form-control" id="town4" readonly="readonly" placeholder="Town">
+							</div>
+						</fieldset>
+					</form>
+				</div>
+  				<div class="col-6 col-lg-6">
+  					<h4>Code example</h4>
+<pre class="prettyprint">$('#housenr').papi({
+    source: $('#zipcode4')[0],
+    event: 'change',
+    placeholders: {
+        street: $('#street4')[0],
+        town: $('#town4')[0]
+    }
+});</pre>
+  				</div>
+			</div>
+			<hr>
+			<div class="row clearfix">
+				<div class="col-6 col-lg-6">
+					<form method="POST" id="example-5">
+						<fieldset>
+							<legend>Fetch BAG data</legend>
+							<div class="form-group">
+								<label for="zipcode5">Dutch zipcode</label>
+								<input type="text" class="form-control" id="zipcode5" placeholder="e.g. 4814 DC">
+							</div>
+							<div class="form-group">
+								<label for="housenr">House number</label>
+								<input type="text" class="form-control" id="housenr2" placeholder="e.g. 29">
+							</div>
+							<div class="form-group">
+								<input type="text" name="street" class="form-control" id="street5" readonly="readonly" placeholder="Street">
+								<input type="text" name="town" class="form-control" id="town5" readonly="readonly" placeholder="Town">
+							</div>
+						</fieldset>
+					</form>
+				</div>
+  				<div class="col-6 col-lg-6">
+  					<h4>Code example</h4>
+<pre class="prettyprint">$('#housenr2').on('change', function () {
+    $.papi
+        .lookup($('#zipcode5')[0].value, this.value, true)
+        .ok(function (data) {
+            this
+                .setValue('street', $('#street5')[0])
+                .setValue('town', $('#town5')[0]);
+
+            $('#bag-output')
+                .html(JSON.stringify(data.bag)).removeAttr('hidden');
+        });
+});</pre>
+<pre class="prettyprint" id="bag-output" hidden></pre>
+  				</div>
+			</div>
+			<hr>
+			<h2>Road map</h2>
+			<p>You know, the usual stuff ;-)</p>
+			<ul>
+				<li>Internal logging / debugging</li>
+				<li>More documation</li>
+				<li>Unit testing</li>
+				<li>More demo's / examples</li>
+				<li>Use localStorage for more persistent caching</li>
+			</ul>
+			<hr>
+			<h2>License</h2>
+			<p>
+				Copyright (c) 2013 <a href="http://www.linkedin.com/in/boyeoomens">Boye Oomens</a> Licensed under the MIT license.
+			</p>
+		</div>	
+		<!--[if lt IE 9]>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script>window.jQuery||document.write('<script src="/library/vendor/jquery/jquery-1.10.2.min.js"><\/script>')</script>
+		<![endif]-->
+		<!--[if gte IE 9]><!-->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+		<script>window.jQuery||document.write('<script src="/library/vendor/jquery/jquery-2.0.3.min.js"><\/script>')</script>
+		<!--<![endif]-->
+		<script src="http://frontend.e-sites.nl/library/google/prettify.js"></script>
+		<script>window.prettyPrint && prettyPrint();</script>
+		<script src="jquery.papi.js"></script>
+		<script src="assets/events.js"></script>
+	</body>
+</html>

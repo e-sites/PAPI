@@ -1,0 +1,39 @@
+{
+  "name": "PAPI",
+  "version": "0.1.0",
+  "description": "A lightweight jQuery plugin that makes working with the Postcode API easy as pie",
+  "homepage": "http://jussay.in/dev/papi",
+  "scripts": {
+	"test": "grunt jshint",
+	"start": ""
+  },
+  "author": {
+	"name": "Boye Oomens",
+	"email": "github@jussay.in",
+	"web": "http://jussay.in/"
+  },
+  "repository": {
+	"type": "git",
+	"url": "git://github.com/boye/PAPI.git"
+  },
+  "engines": {
+	"node": "~0.8.0"
+  },
+  "devDependencies": {
+	"grunt-contrib-jshint": "~0.2.0",
+	"grunt-contrib-uglify": "~0.1.1",
+	"grunt-contrib-qunit": "~0.2.0",
+	"grunt": "~0.4.0"
+  },
+  "licenses": [
+	{
+	  "type": "MIT",
+	  "url": "https://github.com/boye/PAPI/blob/master/LICENSE"
+	}
+  ],
+  "keywords": [
+	"forms",
+	"validation",
+	"validate"
+  ]
+}

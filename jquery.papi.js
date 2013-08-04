@@ -27,7 +27,8 @@
 		// this counts also for the datatype
 		ajaxDefaults = {
 			type: 'GET',
-			dataType: 'json'
+			dataType: 'json',
+			crossDomain: true
 		},
 
 		// Zipcode regular expression

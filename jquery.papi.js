@@ -7,6 +7,7 @@
  *  @version : 0.1.0
  *  @license : MIT
  *  @see     : http://api.postcodeapi.nu/docs/
+ *  @see     : http://boye.e-sites.nl/papi/
  */
 
 ;(function ($, window, document, undefined) {

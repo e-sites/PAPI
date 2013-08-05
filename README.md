@@ -18,6 +18,7 @@ Well, for starters, because:
 <li>it validates the actual zipcode that is used to fetch the data;</li>
 <li>it handles responses internally so you can focus on processing the data in the available callbacks;</li>
 <li>it comes with a fully fledged static API (<code>$.papi</code>), so you can write your custom logic as well</li>
+<li>it offers internal error handling (401, 404 and 500)</li>
 </ul>
 
 ##Getting started
@@ -138,7 +139,6 @@ $('#housenr').papi({
 	<li>More documation</li>
 	<li>Unit testing</li>
 	<li>More demo's / examples</li>
-	<li>Use localStorage for more persistent caching</li>
 </ul>
 
 ##License

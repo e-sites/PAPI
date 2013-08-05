@@ -132,6 +132,10 @@ $('#housenr').papi({
 <h4><code>.isValidZipcode(zipcode)</code></h4>
 <p>Small helper to see if the given zipcode is valid</p>
 
+##Browser support
+Tested in the latest versions of Google Chrome, Mozilla Firefox, Opera and Safari. As for Internet Explorer, it only works in IE10+ due to the lack of proper CORS functionality.
+I have tried to work around this with <code>XDomainRequest</code>, unfortunately <a href="http://blogs.msdn.com/b/ieinternals/archive/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds.aspx" target="_blank">you can't set custom request headers</a> when using XDR, so authorization can't be realized.
+
 ##Road map
 <p>You know, the usual stuff ;-)</p>
 <ul>

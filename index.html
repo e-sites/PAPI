@@ -26,6 +26,7 @@
 				<div class="nav-collapse collapse">
 					<ul class="nav navbar-nav">
 						<li class="active"><a href="/papi/">Home</a></li>
+						<li><a href="#examples">Examples</a></li>
 						<li><a href="http://www.linkedin.com/in/boyeoomens">About</a></li>
 					</ul>
 				</div>
@@ -43,11 +44,12 @@
 			<h3>Why PAPI?</h3>
 			<p>Well, for starters, because:</p>
 			<ul>
-				<li>it's lightweight (only 0.5kb minified w/ gzip) and developed with high performance in mind;</li>
+				<li>it's lightweight (only 0.6kb minified w/ gzip) and developed with high performance in mind;</li>
 				<li>it caches results internally, so no unecessary API calls;</li>
 				<li>it validates the actual zipcode that is used to fetch the data;</li>
 				<li>it handles responses internally so you can focus on processing the data in the available callbacks;</li>
 				<li>it comes with a fully fledged static API (<code>$.papi</code>), so you can write your custom logic as well</li>
+				<li>it offers internal error handling (401, 404 and 500)</li>
 			</ul>
 			<hr>
 			<h2>Getting started</h2>
@@ -161,7 +163,7 @@
 			</p>
 			<h4><code>.isValidZipcode(zipcode)</code></h4>
 			<p>Small helper to see if the given zipcode is valid</p>
-			<hr>
+			<hr id="examples">
 			<h2>Examples</h2>
 			<p>
 				Below some examples on how PAPI can be implemented:
@@ -176,7 +178,7 @@
 							</p>
 							<div class="form-group">
 								<label for="zipcode1">Dutch zipcode</label>
-								<input type="text" class="form-control" id="zipcode1" placeholder="e.g. 4814 DC">
+								<input type="text" class="form-control" id="zipcode1" placeholder="e.g. 4814 DC" maxlength="7">
 							</div>
 							<div class="form-group">
 								<input type="text" name="street" class="form-control" id="street1" readonly="readonly" placeholder="Street">
@@ -207,7 +209,7 @@
 							</p>
 							<div class="form-group">
 								<label for="zipcode1">Dutch zipcode</label>
-								<input type="text" class="form-control" id="zipcode2" placeholder="e.g. 4814 DC">
+								<input type="text" class="form-control" id="zipcode2" placeholder="e.g. 4814 DC" maxlength="7">
 							</div>
 							<div class="form-group">
 								<label for="street2">Street</label>
@@ -247,7 +249,7 @@ $('#example-2').on('click', function (e) {
 							<legend>Simple lookup on change (and logging the response)</legend>
 							<div class="form-group">
 								<label for="zipcode3">Dutch zipcode</label>
-								<input type="text" class="form-control" id="zipcode3" placeholder="e.g. 4814 DC">
+								<input type="text" class="form-control" id="zipcode3" placeholder="e.g. 4814 DC" maxlength="7">
 							</div>
 						</fieldset>
 					</form>
@@ -277,7 +279,7 @@ $('#example-2').on('click', function (e) {
 							<legend>Simple lookup based on house number</legend>
 							<div class="form-group">
 								<label for="zipcode4">Dutch zipcode</label>
-								<input type="text" class="form-control" id="zipcode4" placeholder="e.g. 4814 DC">
+								<input type="text" class="form-control" id="zipcode4" placeholder="e.g. 4814 DC" maxlength="7">
 							</div>
 							<div class="form-group">
 								<label for="housenr">House number</label>
@@ -310,7 +312,7 @@ $('#example-2').on('click', function (e) {
 							<legend>Fetch BAG data</legend>
 							<div class="form-group">
 								<label for="zipcode5">Dutch zipcode</label>
-								<input type="text" class="form-control" id="zipcode5" placeholder="e.g. 4814 DC">
+								<input type="text" class="form-control" id="zipcode5" placeholder="e.g. 4814 DC" maxlength="7">
 							</div>
 							<div class="form-group">
 								<label for="housenr">House number</label>
@@ -341,6 +343,10 @@ $('#example-2').on('click', function (e) {
   				</div>
 			</div>
 			<hr>
+			<h2>Browser support</h2>
+<p>Tested in the latest versions of Google Chrome, Mozilla Firefox, Opera and Safari. As for Internet Explorer, it only works in IE10+ due to the lack of proper CORS functionality.
+	I have tried to work around this with <code>XDomainRequest</code>, unfortunately <a href="http://blogs.msdn.com/b/ieinternals/archive/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds.aspx" target="_blank">you can't set custom request headers</a> when using XDR, so authorization can't be realized.</p>
+			<hr>
 			<h2>Road map</h2>
 			<p>You know, the usual stuff ;-)</p>
 			<ul>
@@ -348,7 +354,6 @@ $('#example-2').on('click', function (e) {
 				<li>More documation</li>
 				<li>Unit testing</li>
 				<li>More demo's / examples</li>
-				<li>Use localStorage for more persistent caching</li>
 			</ul>
 			<hr>
 			<h2>License</h2>

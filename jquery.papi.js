@@ -4,7 +4,7 @@
  *  It offers a static API layer as well as fully 
  *  
  *  @author  : Boye Oomens <boye@jussay.in>
- *  @version : 0.1.0
+ *  @version : 0.2.0
  *  @license : MIT
  *  @see     : http://api.postcodeapi.nu/docs/
  *  @see     : http://boye.e-sites.nl/papi/
@@ -28,7 +28,7 @@
 		ajaxDefaults = {
 			type: 'GET',
 			dataType: 'json',
-			crossDomain: true
+			crossDomain: true // FF needs this
 		},
 
 		// Zipcode regular expression
@@ -48,6 +48,7 @@
 	 * Validates the response data and is called if the request succeeded.
 	 * 
 	 * @param {object} body
+	 * @private
 	 */
 	function _validateResponse(body) {
 		if ( body.hasOwnProperty('success') && body.hasOwnProperty('resource') ) {
@@ -59,12 +60,15 @@
 	 * Handles the data sent back from the server and invokes the appropriate callback
 	 * Also, stores fetched data in cache
 	 * 
-	 * @param {object} body The actual response body
+	 * @param {object}  body The actual response body
+	 * @param {Boolean} sim whether we are simulating a response
 	 * @private
 	 */
-	function _createResponse(body) {
+	function _createResponse(body, sim) {
 		if ( body.success ) {
-			$.papi.cache[$.papi.activeZipcode] = body.resource;
+			if ( !sim ) {
+				$.papi.cache.setItem( $.papi.activeZipcode, JSON.stringify(body.resource) );
+			}
 			$.papi._ok.apply($.papi, [body.resource]);
 		}
 	}
@@ -72,11 +76,16 @@
 	/**
 	 * Handles failed requests
 	 * Note: you should consider to log this kind of errors externally
+	 * 
+	 * @private
 	 */
 	function _handleError(xhr) {
 		var error;
 
 		switch (xhr.status) {
+		case 0:
+			error = 'you\'re probably using IE right? Well, unfortunately, that\'s not gonna work. You\'ll at least need IE10';
+			break;
 		case 401:
 			error = 'authorization required, please check your api-key';
 			break;
@@ -100,14 +109,6 @@
 	$.papi = {
 
 		/**
-		 * Keeps track of all API calls by storing the given zipcode
-		 * This will be used as reference to fetch catched data
-		 * 
-		 * @type {Array}
-		 */
-		_apiCalls: [],
-
-		/**
 		 * OK callback
 		 * 
 		 * @type {Function}
@@ -122,16 +123,39 @@
 		_notfound: $.noop,
 
 		/**
-		 * Given API key
+		 * API key
+		 * 
 		 * @type {String}
 		 */
 		apiKey: null,
 
 		/**
-		 * Internal caching based on zipcode
+		 * Feature detect + local reference (courtesy of Mathias Bynens)
+		 * Used for internal caching based on zipcode
+		 * 
 		 * @type {Object}
 		 */
-		cache: {},
+		cache: (function () {
+			var uid = new Date(),
+				storage,
+				result;
+			try {
+				(storage = window.localStorage).setItem(uid, uid);
+				result = storage.getItem(uid) == uid;
+				storage.removeItem(uid);
+				return result && storage;
+			} catch(e) {}
+		}()),
+
+		/**
+		 * Small helper to see if the given zipcode is cached
+		 * 
+		 * @param  {String}  zipcode
+		 * @return {Boolean}
+		 */
+		isCached: function (zipcode) {
+			return (this.cache.getItem(zipcode));
+		},
 
 		/**
 		 * Zipcode that is used in last API call
@@ -151,12 +175,14 @@
 			}
 
 			this.apiKey = key;
+
+			$.support.cors = true;
 			$.extend(ajaxDefaults, {
 				beforeSend: function (xhr) {
 					xhr.setRequestHeader('Api-Key', key);
 				}
 			});
-
+			
 			$.ajaxSetup(ajaxDefaults);
 
 			return this;
@@ -173,15 +199,13 @@
 		 * @return {Object} $.papi
 		 */
 		lookup: function (zipcode, houseNr, bag) {
-			if ( this.cache.hasOwnProperty(zipcode) ) {
-				$.papi._ok.apply($.papi, [this.cache[zipcode]]);
+			zipcode = zipcode.replace(/\s+/g, ''); // Strip additional space
+			this.activeZipcode = zipcode;
+
+			// First check if we have something in our cache
+			if ( this.isCached(zipcode) ) {
 				return this;
 			}
-
-			zipcode = zipcode.replace(/\s+/g, ''); // Strip additional space
-
-			this._apiCalls.push(zipcode);
-			this.activeZipcode = zipcode;
 
 			if ( !zipcode || !this.isValidZipcode( zipcode ) ) {
 				return this;
@@ -204,6 +228,12 @@
 		ok: function (callback) {
 			if ( callback && $.isFunction(callback) ) {
 				this._ok = callback;
+				if ( this.isCached( this.activeZipcode ) ) {
+					_createResponse({
+						success: true,
+						resource: JSON.parse( this.cache.getItem( this.activeZipcode ) )
+					}, true);
+				}
 			}
 			return this;
 		},
@@ -234,7 +264,7 @@
 				return this;
 			}
 			if ( placeholder.nodeName.toLowerCase() === 'input' ) {
-				placeholder.value = this.cache[this.activeZipcode][key];
+				placeholder.value = JSON.parse(this.cache.getItem(this.activeZipcode))[key];
 			}
 			return this;
 		},

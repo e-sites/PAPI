@@ -11,14 +11,13 @@
 		// Needed for proper authorization
 		$.papi.setApiKey('930654c3382ff89252affc02b485ae094f97de6d');
 
-		// Most basis usage
+		// Most basic usage
 		$('#zipcode1').papi({
 			event: 'change',
 			placeholders: {
 				street: $('#street1')[0],
 				town: $('#town1')[0]
-			},
-			bag: true
+			}
 		});
 		
 		// Custom stuff

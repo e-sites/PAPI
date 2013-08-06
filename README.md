@@ -13,13 +13,12 @@ The Postcode API is developed by <a href="http://www.freshheads.com/" target="_b
 Well, for starters, because:
 
 <ul>
-<li>it's lightweight (only 0.7kb minified w/ gzip) and developed with high performance in mind;</li>
+<li>it's lightweight (only 0.5kb minified w/ gzip) and developed with high performance in mind;</li>
 <li>it caches results internally, so no unecessary API calls;</li>
 <li>it validates the actual zipcode that is used to fetch the data;</li>
 <li>it handles responses internally so you can focus on processing the data in the available callbacks;</li>
 <li>it comes with a fully fledged static API (<code>$.papi</code>), so you can write your custom logic as well</li>
 <li>it offers internal error handling (401, 404 and 500)</li>
-<li>it (by default) provides a PHP proxy to work around CORS restrictions in IE9 and lower</li>
 </ul>
 
 ##Getting started
@@ -133,6 +132,13 @@ $('#housenr').papi({
 <h4><code>.isValidZipcode(zipcode)</code></h4>
 <p>Small helper to see if the given zipcode is valid</p>
 
+##Browser support
+Tested in the latest versions of Google Chrome, Mozilla Firefox, Opera and Safari. As for Internet Explorer, it only works in IE10+ due to the lack of proper CORS functionality.
+I have tried to work around this with <code>XDomainRequest</code>, unfortunately <a href="http://blogs.msdn.com/b/ieinternals/archive/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds.aspx" target="_blank">you can't set custom request headers</a> when using XDR, so authorization can't be realized.
+
+<strong>Update:</strong> as from 0.3.0 I have included a PHP proxy to provide support for &lt;IE10 as well. <br>
+Also, if you polyfill <code>JSON.parse</code> / <code>JSON.stringify</code> and <code>window.localStorage</code> you can also support IE7.
+
 ##Road map
 <p>You know, the usual stuff ;-)</p>
 <ul>
@@ -140,7 +146,6 @@ $('#housenr').papi({
 	<li>More documation</li>
 	<li>Unit testing</li>
 	<li>More demo's / examples</li>
-	<li>Use localStorage for more persistent caching</li>
 </ul>
 
 ##License

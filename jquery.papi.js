@@ -3,7 +3,7 @@
  *  A lightweight jQuery plugin that makes working with the Postcode API (@postcodeapi) easy as pie.
  *  
  *  @author  : Boye Oomens <boye@jussay.in>
- *  @version : 0.2.0
+ *  @version : 0.3.0
  *  @license : MIT
  *  @see     : http://api.postcodeapi.nu/docs/
  *  @see     : http://boye.e-sites.nl/papi/
@@ -84,7 +84,7 @@
 	function _handleError(xhr) {
 		var error;
 
-		switch (xhr.status) {			
+		switch (xhr.status) {
 		case 401:
 			error = 'authorization required, please check your api-key';
 			break;

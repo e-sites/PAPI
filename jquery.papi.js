@@ -1,10 +1,9 @@
 /*
  *  Project: PAPI - Postcode API 
  *  A lightweight jQuery plugin that makes working with the Postcode API (@postcodeapi) easy as pie.
- *  It offers a static API layer as well as fully 
  *  
  *  @author  : Boye Oomens <boye@jussay.in>
- *  @version : 0.2.0
+ *  @version : 0.3.0
  *  @license : MIT
  *  @see     : http://api.postcodeapi.nu/docs/
  *  @see     : http://boye.e-sites.nl/papi/
@@ -17,10 +16,10 @@
 	// Create the defaults once
 	var pluginName = 'papi',
 		defaults = {
-			bag: false,
-			event: null,
+			event: 'change',
 			source: null,
-			placeholders: {}
+			placeholders: {},
+			bag: false
 		},
 
 		// Don't change this, the API only accepts GET requests,
@@ -51,6 +50,9 @@
 	 * @private
 	 */
 	function _validateResponse(body) {
+		if ( typeof body === 'string' ) {
+			body = JSON.parse(body);
+		}
 		if ( body.hasOwnProperty('success') && body.hasOwnProperty('resource') ) {
 			_createResponse(body);
 		}
@@ -83,18 +85,13 @@
 		var error;
 
 		switch (xhr.status) {
-		case 0:
-			error = 'you\'re probably using IE right? Well, unfortunately, that\'s not gonna work. You\'ll at least need IE10';
-			break;
 		case 401:
 			error = 'authorization required, please check your api-key';
 			break;
-
 		case 404:
 			error = 'no additional data found';
 			$.papi._notfound.apply($.papi, [xhr]);
 			break;
-
 		case 500:
 			error = 'server error, shit has hit the fan yo! Contact @postcodeapi';
 			break;
@@ -128,6 +125,13 @@
 		 * @type {String}
 		 */
 		apiKey: null,
+
+		/**
+		 * Proxy URL (can be used for IE)
+		 * 
+		 * @type {String}
+		 */
+		proxyUrl: null,
 
 		/**
 		 * Feature detect + local reference (courtesy of Mathias Bynens)
@@ -176,15 +180,28 @@
 
 			this.apiKey = key;
 
-			$.support.cors = true;
 			$.extend(ajaxDefaults, {
 				beforeSend: function (xhr) {
 					xhr.setRequestHeader('Api-Key', key);
 				}
 			});
 			
+			$.support.cors = true;
 			$.ajaxSetup(ajaxDefaults);
 
+			return this;
+		},
+
+		/**
+		 * Sets proxy location
+		 * 
+		 * @param  {String} url location of the proxy file
+		 * @return {Object} $.papi
+		 */
+		proxy: function (url) {
+			if ( url && typeof url === 'string' ) {
+				this.proxyUrl = url;
+			}
 			return this;
 		},
 
@@ -199,10 +216,11 @@
 		 * @return {Object} $.papi
 		 */
 		lookup: function (zipcode, houseNr, bag) {
-			zipcode = zipcode.replace(/\s+/g, ''); // Strip additional space
+			var url = API_URL + [zipcode, houseNr].join('/') + (bag ? '/' + BAG_PARAM : '');
+
+			zipcode = zipcode.replace(/\s+/g, '');
 			this.activeZipcode = zipcode;
 
-			// First check if we have something in our cache
 			if ( this.isCached(zipcode) ) {
 				return this;
 			}
@@ -211,7 +229,11 @@
 				return this;
 			}
 
-			$.ajax({url: API_URL + [zipcode, houseNr].join('/') + (bag ? '/' + BAG_PARAM : '')})
+			if ( this.proxyUrl ) {
+				url = this.proxyUrl + '?' + $.param({zipcode: zipcode, houseNr: houseNr, bag: bag, apikey: this.apiKey});
+			}
+
+			$.ajax({url: url})
 				.success( _validateResponse )
 				.error( _handleError );
 
@@ -311,7 +333,7 @@
 			var o = $.extend({}, defaults, options);
 
 			// Small to check see if the api-key is already set
-			if ( typeof $.papi.apiKey !== 'string' || !$.papi.apiKey.length ) {
+			if ( !$.papi.apiKey ) {
 				throw new Error('PAPI error: no valid api-key given');
 			}
 
@@ -321,7 +343,7 @@
 				var zipcode = this.value,
 					houseNr;
 
-				// If there is a zipcode source in the options
+				// If there is a zipcode source passed as option
 				// we know we're dealing with a house number as main target
 				if ( o.source ) {
 					zipcode = (o.source.constructor === HTMLInputElement ? o.source.value : $(o.source).val());

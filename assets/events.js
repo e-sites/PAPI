@@ -6,14 +6,36 @@
 
 	'use strict';
 
+	// Nifty IE detection
+	// Courtesy of James Padolsey
+	var ie = (function(){
+	 
+		var undef,
+			v = 3,
+			div = document.createElement('div'),
+			all = div.getElementsByTagName('i');
+	 
+		while (
+			div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->',
+			all[0]
+		);
+	 
+		return v > 4 ? v : undef;
+	 
+	}());
+
 	$(document).ready(function () {
 
 		// Needed for proper authorization
 		$.papi.setApiKey('930654c3382ff89252affc02b485ae094f97de6d');
 
+		// Set PHP proxy for IE
+		if ( ie <= 9 ) {
+			$.papi.proxy('proxy.php');
+		}
+
 		// Most basic usage
 		$('#zipcode1').papi({
-			event: 'change',
 			placeholders: {
 				street: $('#street1')[0],
 				town: $('#town1')[0]
@@ -54,7 +76,7 @@
 
 			// Fourth example: fetch data based on zipcode and house number
 			$('#housenr').papi({
-				source: $('#zipcode4')[0],
+				source: $('#zipcode4'),
 				event: 'change',
 				placeholders: {
 					street: $('#street4')[0],

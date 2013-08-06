@@ -13,11 +13,13 @@ The Postcode API is developed by <a href="http://www.freshheads.com/" target="_b
 Well, for starters, because:
 
 <ul>
-<li>it's lightweight (only 0.5kb minified w/ gzip) and developed with high performance in mind;</li>
+<li>it's lightweight (only 0.7kb minified w/ gzip) and developed with high performance in mind;</li>
 <li>it caches results internally, so no unecessary API calls;</li>
 <li>it validates the actual zipcode that is used to fetch the data;</li>
 <li>it handles responses internally so you can focus on processing the data in the available callbacks;</li>
 <li>it comes with a fully fledged static API (<code>$.papi</code>), so you can write your custom logic as well</li>
+<li>it offers internal error handling (401, 404 and 500)</li>
+<li>it (by default) provides a PHP proxy to work around CORS restrictions in IE9 and lower</li>
 </ul>
 
 ##Getting started

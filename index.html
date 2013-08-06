@@ -11,6 +11,9 @@
 		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
 		<link rel="stylesheet" href="http://frontend.e-sites.nl/css/prettify.css">
 		<link rel="stylesheet" href="http://getbootstrap.com/assets/css/pygments-manni.css">
+		<style>
+			#forkongithub a{background:#D14;color:#fff;text-decoration:none;font-family:arial, sans-serif;text-align:center;font-weight:bold;padding:5px 40px;font-size:1.5rem;line-height:2rem;position:relative;transition:0.5s; z-index:1031;}#forkongithub a:hover{background:#060;color:#fff;}#forkongithub a::before,#forkongithub a::after{content:"";width:100%;display:block;position:absolute;top:1px;left:0;height:1px;background:#fff;}#forkongithub a::after{bottom:1px;top:auto;}@media screen and (min-width:800px){#forkongithub{position:absolute;display:block;top:-15px;right:0;width:200px;overflow:hidden;height:200px;}#forkongithub a{width:232px;position:absolute;top:60px;right:-60px;transform:rotate(45deg);-webkit-transform:rotate(45deg);box-shadow:4px 4px 10px rgba(0,0,0,0.8);}}
+		</style>
 		<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 		<script>var _gaq=_gaq||[];_gaq.push(['_setAccount','UA-19517012-1'],['_trackPageview'],['_trackPageLoadTime']);(function(b,c){var a=b.createElement(c),d=b.getElementsByTagName(c)[0];a.async=a.src='//www.google-analytics.com/ga.js';d.parentNode.insertBefore(a,d)})(document,'script');</script>
 	</head>
@@ -32,11 +35,12 @@
 				</div>
 			</div>
 		</div>
-		<div class="container" style="padding-top:60px;">
+		<div class="container" style="padding:60px .5em 0;">
 			<h1>PAPI</h1>
 			<blockquote>
 				<p>A lightweight jQuery plugin that makes working with the <a href="http://www.postcodeapi.nu/" target="_blank">Postcode API</a> easy as pie.</p>
 			</blockquote>
+			<span id="forkongithub"><a href="https://github.com/boye/PAPI">Fork me on GitHub</a></span>
 			<h3>The Postcode API</h3>
 			<p>
 				The Postcode API is developed by <a href="http://www.freshheads.com/" target="_blank">Freshheads</a>. Check out the docs: <a href="http://api.postcodeapi.nu/docs/" target="_blank">http://api.postcodeapi.nu/docs/</a>
@@ -50,6 +54,7 @@
 				<li>it handles responses internally so you can focus on processing the data in the available callbacks;</li>
 				<li>it comes with a fully fledged static API (<code>$.papi</code>), so you can write your custom logic as well</li>
 				<li>it offers internal error handling (401, 404 and 500)</li>
+				<li>it (by default) provides a PHP proxy to work around <a href="#browsersupport">CORS restrictions</a> in IE9 and lower</li>
 			</ul>
 			<hr>
 			<h2>Getting started</h2>
@@ -63,6 +68,14 @@
 				It's important you authorize yourself by setting the API key. Use the static <code>.setApiKey</code> method for this:
 			</p>
 <pre class="prettyprint">$.papi.setApiKey('4815162342');</pre>
+			<h3>Working with the provided proxy</h3>
+			<p>
+				By default, PAPI provides a PHP proxy to support &lt;IE10. You can set the proxy as follows:
+			</p>
+<pre class="prettyprint">$.papi.proxy('proxy.php'); // location of the proxy file</pre>
+			<p class="alert alert-info">
+				<strong>Note:</strong> since you only want to use the proxy in &lt;IE10, you should wrap the <code>$.papi.proxy</code> call within an if-statement where you feature-detect IE9 and lower.
+			</p>
 			<hr>
 			<h2>Docs</h2>
 			<p>
@@ -74,11 +87,21 @@
 			</p>
 			<h3>Plugin</h3>
 			<p>
-				Example plugin call:
+				Below you can see the most basic plugin call, just pass the placeholders that need completion.<br>By default, PAPI listens to the <code>onchange</code> event to trigger the actual API call
+			</p>
+<pre class="prettyprint">$('#zipcode').papi({
+    placeholders: {
+        street: $('#street4')[0],
+        town: $('#town4')[0]
+    }
+});</pre>
+			<p>
+				When you want to pass a house number as well, you must set the zipcode manually by using the <code>source</code> property. Please note that this must be a DOM element
+				Overriding the onchange event can be accomplished by passing the <code>event</code> property.
 			</p>
 <pre class="prettyprint">$('#housenr').papi({
     source: $('#zipcode4')[0],
-    event: 'change',
+    event: 'input',
     placeholders: {
         street: $('#street4')[0],
         town: $('#town4')[0]
@@ -89,12 +112,14 @@
 				<colgroup>
 					<col class="col-lg-1">
 					<col class="col-lg-1">
+					<col class="col-lg-1">
 					<col class="col-lg-7">
 				</colgroup>
 				<thead>
 				<tr>
 					<th>Property</th>
 					<th>Type</th>
+					<th>Default</th>
 					<th>Description</th>
 				</tr>
 				</thead>
@@ -103,9 +128,10 @@
 						<td>
 							<code>source</code>
 						</td>
+						<td><code>HTMLInputElement</code></td>
 						<td><code>null</code></td>
 						<td>
-							Indicates a successful or positive action
+							The target element that holds the zipcode. (you can pass a jQuery wrapped set as well).
 						</td>
 					</tr>
 					<tr>
@@ -113,6 +139,7 @@
 							<code>event</code>
 						</td>
 						<td><code>String</code></td>
+						<td><code>'change'</code></td>
 						<td>Event type that triggers the actual lookup</td>
 					</tr>
 					<tr>
@@ -120,10 +147,10 @@
 							<code>placeholders</code>
 						</td>
 						<td><code>Object</code></td>
+						<td><code>{}</code></td>
 						<td>
-							The given and will be mapped against available properties that are returned by the API <br>
-							Available placeholders are: <br>
-							latitude, longitude, municipality, postcode, province, street, town, house_number, x, y, bag.</code>
+							The given keys and will be mapped against available properties that are returned by the API. The values must be DOM elements (i.e. HTMLInputElement).
+							Available placeholder keys are: latitude, longitude, municipality, postcode, province, street, town, house_number, x, y, bag.</code>
 						</td>
 					</tr>
 					<tr>
@@ -131,10 +158,9 @@
 							<code>bag</code>
 						</td>
 						<td><code>Boolean</code></td>
+						<td><code>false</code></td>
 						<td>
-							This will add an additional querystring (<code>?view=bag</code>) to the call and will return <a href="http://bag.vrom.nl/" target="_blank">BAG</a> info (if available)<br>
-							Available placeholders are: <br>
-							latitude, longitude, municipality, postcode, province, street, town, house_number, x, y, bag.</code>
+							This will add an additional querystring (<code>?view=bag</code>) to the call and will return <a href="http://bag.vrom.nl/" target="_blank">BAG</a> info (if available)
 						</td>
 					</tr>
 				</tbody>
@@ -190,7 +216,6 @@
   				<div class="col-6 col-lg-6">
   					<h4>Code example</h4>
 <pre class="prettyprint">$('#zipcode1').papi({
-    event: 'change',
     placeholders: {
         street: $('#street1')[0],
         town: $('#town1')[0]
@@ -342,11 +367,15 @@ $('#example-2').on('click', function (e) {
 <pre class="prettyprint" id="bag-output" hidden></pre>
   				</div>
 			</div>
-			<hr>
+			<hr id="browsersupport">
 			<h2>Browser support</h2>
 <p>Tested in the latest versions of Google Chrome, Mozilla Firefox, Opera and Safari. As for Internet Explorer, it only works in IE10+ due to the lack of proper CORS functionality.
 	I have tried to work around this with <code>XDomainRequest</code>, unfortunately <a href="http://blogs.msdn.com/b/ieinternals/archive/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds.aspx" target="_blank">you can't set custom request headers</a> when using XDR, so authorization can't be realized.</p>
-			<hr>
+			<p class="alert alert-info">
+				<strong>Update:</strong> as from 0.3.0 I have included a PHP proxy to provide support for &lt;IE10 as well. <br>
+				Also, if you polyfill <code>JSON.parse</code> / <code>JSON.stringify</code> and <code>window.localStorage</code> you can support IE7 as well.
+			</p>
+			<hr id="roadmap">
 			<h2>Road map</h2>
 			<p>You know, the usual stuff ;-)</p>
 			<ul>
@@ -360,7 +389,7 @@ $('#example-2').on('click', function (e) {
 			<p>
 				Copyright (c) 2013 <a href="http://www.linkedin.com/in/boyeoomens">Boye Oomens</a> Licensed under the MIT license.
 			</p>
-		</div>	
+		</div>
 		<!--[if lt IE 9]>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script>window.jQuery||document.write('<script src="/library/vendor/jquery/jquery-1.10.2.min.js"><\/script>')</script>
@@ -369,8 +398,10 @@ $('#example-2').on('click', function (e) {
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 		<script>window.jQuery||document.write('<script src="/library/vendor/jquery/jquery-2.0.3.min.js"><\/script>')</script>
 		<!--<![endif]-->
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
 		<script src="http://frontend.e-sites.nl/library/google/prettify.js"></script>
 		<script>window.prettyPrint && prettyPrint();</script>
+		<!-- plugin & corresponding events for the demos -->
 		<script src="jquery.papi.js"></script>
 		<script src="assets/events.js"></script>
 	</body>

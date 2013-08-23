@@ -73,7 +73,7 @@ $('#housenr').papi({
 			</td>
 			<td><code>null</code></td>
 			<td>
-				Indicates a successful or positive action
+				When working with a house number this needs to point to the source element of the zipcode
 			</td>
 		</tr>
 		<tr>

@@ -73,7 +73,7 @@ $('#housenr').papi({
 			</td>
 			<td><code>null</code></td>
 			<td>
-				Indicates a successful or positive action
+				When working with a house number this needs to point to the source element of the zipcode
 			</td>
 		</tr>
 		<tr>
@@ -101,8 +101,6 @@ $('#housenr').papi({
 			<td><code>Boolean</code></td>
 			<td>
 				This will add an additional querystring (<code>?view=bag</code>) to the call and will return <a href="http://bag.vrom.nl/" target="_blank">BAG</a> info (if available)<br>
-				Available placeholders are: <br>
-				latitude, longitude, municipality, postcode, province, street, town, house_number, x, y, bag.</code>
 			</td>
 		</tr>
 	</tbody>

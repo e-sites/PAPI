@@ -9,8 +9,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="author" title="Boye Oomens" href="http://www.linkedin.com/in/boyeoomens">
 		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
-		<link rel="stylesheet" href="http://frontend.e-sites.nl/css/prettify.css">
-		<link rel="stylesheet" href="http://getbootstrap.com/assets/css/pygments-manni.css">
+		<link rel="stylesheet" href="http://frontend.e-sites.nl/library/min/g=prettifyCss">
 		<style>
 			#forkongithub a{background:#D14;color:#fff;text-decoration:none;font-family:arial, sans-serif;text-align:center;font-weight:bold;padding:5px 40px;font-size:1.5rem;line-height:2rem;position:relative;transition:0.5s; z-index:1031;}#forkongithub a:hover{background:#060;color:#fff;}#forkongithub a::before,#forkongithub a::after{content:"";width:100%;display:block;position:absolute;top:1px;left:0;height:1px;background:#fff;}#forkongithub a::after{bottom:1px;top:auto;}@media screen and (min-width:800px){#forkongithub{position:absolute;display:block;top:-15px;right:0;width:200px;overflow:hidden;height:200px;}#forkongithub a{width:232px;position:absolute;top:60px;right:-60px;transform:rotate(45deg);-webkit-transform:rotate(45deg);box-shadow:4px 4px 10px rgba(0,0,0,0.8);}}
 		</style>
@@ -30,6 +29,7 @@
 					<ul class="nav navbar-nav">
 						<li class="active"><a href="/papi/">Home</a></li>
 						<li><a href="#examples">Examples</a></li>
+						<li><a href="#unittests">Unit tests</a></li>
 						<li><a href="http://www.linkedin.com/in/boyeoomens">About</a></li>
 					</ul>
 				</div>
@@ -75,6 +75,7 @@
 <pre class="prettyprint">$.papi.proxy('proxy.php'); // location of the proxy file</pre>
 			<p class="alert alert-info">
 				<strong>Note:</strong> since you only want to use the proxy in &lt;IE10, you should wrap the <code>$.papi.proxy</code> call within an if-statement where you feature-detect IE9 and lower.
+				If you leave this out the proxy will be used for all API calls.
 			</p>
 			<hr>
 			<h2>Docs</h2>
@@ -367,13 +368,16 @@ $('#example-2').on('click', function (e) {
 <pre class="prettyprint" id="bag-output" hidden></pre>
   				</div>
 			</div>
+			<hr id="unittests">
+			<h2>Unit tests</h2>
+			<object data="tests/index.html" id="testsuite" width="100%" height="500"></object>
 			<hr id="browsersupport">
 			<h2>Browser support</h2>
 <p>Tested in the latest versions of Google Chrome, Mozilla Firefox, Opera and Safari. As for Internet Explorer, it only works in IE10+ due to the lack of proper CORS functionality.
 	I have tried to work around this with <code>XDomainRequest</code>, unfortunately <a href="http://blogs.msdn.com/b/ieinternals/archive/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds.aspx" target="_blank">you can't set custom request headers</a> when using XDR, so authorization can't be realized.</p>
 			<p class="alert alert-info">
 				<strong>Update:</strong> as from 0.3.0 I have included a PHP proxy to provide support for &lt;IE10 as well. <br>
-				Also, if you polyfill <code>JSON.parse</code> / <code>JSON.stringify</code> and <code>window.localStorage</code> you can also support IE7.
+				If you polyfill <code>JSON.parse</code> / <code>JSON.stringify</code> and <code>window.localStorage</code> you can also support IE7.
 			</p>
 			<hr id="roadmap">
 			<h2>Road map</h2>
@@ -399,7 +403,7 @@ $('#example-2').on('click', function (e) {
 		<script>window.jQuery||document.write('<script src="/library/vendor/jquery/jquery-2.0.3.min.js"><\/script>')</script>
 		<!--<![endif]-->
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
-		<script src="http://frontend.e-sites.nl/library/google/prettify.js"></script>
+		<script src="http://frontend.e-sites.nl/library/min/g=prettify"></script>
 		<script>window.prettyPrint && prettyPrint();</script>
 		<!-- plugin & corresponding events for the demos -->
 		<script src="jquery.papi.js"></script>

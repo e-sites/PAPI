@@ -3,7 +3,7 @@
  *  A lightweight jQuery plugin that makes working with the Postcode API (@postcodeapi) easy as pie.
  *  
  *  @author  : Boye Oomens <boye@jussay.in>
- *  @version : 0.3.0
+ *  @version : 0.4.0
  *  @license : MIT
  *  @see     : http://api.postcodeapi.nu/docs/
  *  @see     : http://boye.e-sites.nl/papi/
@@ -90,14 +90,17 @@
 			break;
 		case 404:
 			error = 'no additional data found';
-			$.papi._notfound.apply($.papi, [xhr]);
 			break;
 		case 500:
 			error = 'server error, shit has hit the fan yo! Contact @postcodeapi';
 			break;
 		}
 
-		throw new Error('PAPI error: ' + error);
+		if ( xhr.status === 404 && $.papi._notfound ) {
+			$.papi._notfound.apply($.papi, [xhr]);
+		} else {
+			throw new Error('PAPI error: ' + error);
+		}
 	}
 
 	/**
@@ -110,14 +113,14 @@
 		 * 
 		 * @type {Function}
 		 */
-		_ok: $.noop,
+		_ok: null,
 
 		/**
 		 * Notfound callback 
 		 * 
 		 * @type {Function}
 		 */
-		_notfound: $.noop,
+		_notfound: null,
 
 		/**
 		 * API key
@@ -216,21 +219,21 @@
 		 * @return {Object} $.papi
 		 */
 		lookup: function (zipcode, houseNr, bag) {
-			var url = API_URL + [zipcode, houseNr].join('/') + (bag ? '/' + BAG_PARAM : '');
+			var zip = zipcode.replace(/\s+/g, ''),
+				url = API_URL + [zipcode, houseNr].join('/') + (bag ? '/' + BAG_PARAM : '');
 
-			zipcode = zipcode.replace(/\s+/g, '');
-			this.activeZipcode = zipcode;
+			this.activeZipcode = zip;
 
-			if ( this.isCached(zipcode) ) {
+			if ( this.isCached(zip) ) {
 				return this;
 			}
 
-			if ( !zipcode || !this.isValidZipcode( zipcode ) ) {
+			if ( !zip || !this.isValidZipcode( zip ) ) {
 				return this;
 			}
 
 			if ( this.proxyUrl ) {
-				url = this.proxyUrl + '?' + $.param({zipcode: zipcode, houseNr: houseNr, bag: bag, apikey: this.apiKey});
+				url = this.proxyUrl + '?' + $.param({zipcode: zip, houseNr: houseNr, bag: bag, apikey: this.apiKey});
 			}
 
 			$.ajax({url: url})

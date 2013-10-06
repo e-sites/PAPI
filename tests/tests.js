@@ -75,8 +75,6 @@
 
 	test('Internal caching', function () {
 		try {
-			strictEqual( $.papi.cache.constructor, Storage, 'Constructor points to LocalStorage object' );
-
 			$.papi.cache.setItem( ZIPCODE, JSON.stringify(STATIC_REPSONSE) );
 			ok( $.papi.isCached(ZIPCODE), 'Zipcode and corresponding data successfully cached (.isCached)' );
 

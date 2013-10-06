@@ -194,7 +194,7 @@
 
 	test('Basic API lookup with an invalid zipcode', function () {
 		$.papi.cache.clear();
-		expect(5);
+		expect(2);
 		stop();
 
 		$.papi.setApiKey( API_KEY );
@@ -204,9 +204,6 @@
 			.notfound(function (xhr) {
 				ok( 1, 'The .notfound callback is successfully dispatched' );
 				ok( this.hasOwnProperty('setValue'), 'The `this` context of the .notfound callback points to the static API' );
-				strictEqual( xhr.status, 404, 'The status property of the XHR object equals 404' )
-				ok( JSON.parse(xhr.responseText).hasOwnProperty('error'), 'The API response has an error key' )
-				strictEqual( JSON.parse(xhr.responseText).error.code, 404, 'The API response code is 404 as well' )
 				start();
 			});	
 	});

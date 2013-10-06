@@ -3,7 +3,7 @@
  *  A lightweight jQuery plugin that makes working with the Postcode API (@postcodeapi) easy as pie.
  *  
  *  @author  : Boye Oomens <boye@jussay.in>
- *  @version : 0.4.0
+ *  @version : 0.4.1
  *  @license : MIT
  *  @see     : http://api.postcodeapi.nu/docs/
  *  @see     : http://boye.e-sites.nl/papi/
@@ -24,7 +24,7 @@
 
 		// Don't change this, the API only accepts GET requests,
 		// this counts also for the datatype
-		ajaxDefaults = {
+		ajaxSetup = {
 			type: 'GET',
 			dataType: 'json',
 			crossDomain: true // FF needs this
@@ -88,19 +88,19 @@
 		case 401:
 			error = 'authorization required, please check your api-key';
 			break;
+		case 0:	
 		case 404:
 			error = 'no additional data found';
+			if ( $.papi._notfound ) {
+				return $.papi._notfound.apply($.papi, [xhr]);
+			}
 			break;
 		case 500:
 			error = 'server error, shit has hit the fan yo! Contact @postcodeapi';
 			break;
 		}
 
-		if ( xhr.status === 404 && $.papi._notfound ) {
-			$.papi._notfound.apply($.papi, [xhr]);
-		} else {
-			throw new Error('PAPI error: ' + error);
-		}
+		throw new Error('PAPI error: ' + error);
 	}
 
 	/**
@@ -183,14 +183,11 @@
 
 			this.apiKey = key;
 
-			$.extend(ajaxDefaults, {
+			$.extend(ajaxSetup, {
 				beforeSend: function (xhr) {
 					xhr.setRequestHeader('Api-Key', key);
 				}
 			});
-			
-			$.support.cors = true;
-			$.ajaxSetup(ajaxDefaults);
 
 			return this;
 		},
@@ -236,7 +233,11 @@
 				url = this.proxyUrl + '?' + $.param({zipcode: zip, houseNr: houseNr, bag: bag, apikey: this.apiKey});
 			}
 
-			$.ajax({url: url})
+			$.extend(ajaxSetup, {
+				url: url
+			});
+
+			$.ajax(ajaxSetup)
 				.success( _validateResponse )
 				.error( _handleError );
 

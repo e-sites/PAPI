@@ -2,7 +2,7 @@
  *  Project: PAPI - Postcode API 
  *  A lightweight jQuery plugin that makes working with the Postcode API (@postcodeapi) easy as pie.
  *  
- *  @author  : Boye Oomens <boye@jussay.in>
+ *  @author  : Boye Oomens <github@boye.io>
  *  @version : 0.4.1
  *  @license : MIT
  *  @see     : http://api.postcodeapi.nu/docs/

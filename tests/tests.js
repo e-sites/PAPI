@@ -43,9 +43,9 @@
 		}
 	};
 
-	module('Fundamentals');
+	QUnit.module('Fundamentals');
 
-	test('Setting the API key', function () {
+	QUnit.test('Setting the API key', function () {
 		try {
 			$.papi.setApiKey();
 		} catch(e) {
@@ -62,7 +62,7 @@
 		strictEqual( $.papi.apiKey, API_KEY, 'Successfully stored API key' );
 	});
 
-	test('Setting a proxy URL (preferably for IE)', function () {
+	QUnit.test('Setting a proxy URL (preferably for IE)', function () {
 		$.papi.proxy('');
 		ok( !$.papi.proxyUrl, 'Passing an empty string as URL won\'t work' );
 
@@ -73,7 +73,7 @@
 		$.papi.proxyUrl = null;
 	});
 
-	test('Internal caching', function () {
+	QUnit.test('Internal caching', function () {
 		try {
 			$.papi.cache.setItem( ZIPCODE, JSON.stringify(STATIC_REPSONSE) );
 			ok( $.papi.isCached(ZIPCODE), 'Zipcode and corresponding data successfully cached (.isCached)' );
@@ -86,12 +86,12 @@
 		} catch(e) {}
 	});
 
-	module('Plugin');
+	QUnit.module('Plugin');
 
-	test('Basic plugin call', function () {
+	QUnit.test('Basic plugin call', function (assert) {
+		var done = assert.async();
 
-		expect(2);
-		stop();
+		assert.expect(2);
 
 		$.papi.setApiKey( API_KEY );
 
@@ -105,21 +105,18 @@
 		$('#zipcode1').val('4814DC').trigger('change'); // Trigger API call
 
 		setTimeout(function () {
-			strictEqual( $('#street1')[0].value, 'Reduitlaan', 'Successfully fetched corresponding street' );
-			strictEqual( $('#town1')[0].value, 'Breda', 'Successfully fetched corresponding town' );
-			start();
-		}, 500);
+			assert.strictEqual( $('#street1')[0].value, 'Reduitlaan', 'Successfully fetched corresponding street' );
+			assert.strictEqual( $('#town1')[0].value, 'Breda', 'Successfully fetched corresponding town' );
+			done();
+		}, 1500);
 
-		$.papi.cache.clear();
-		
+		$.papi.cache.clear();		
 	});
 
-	test('Basic plugin call based on house number', function () {
+	QUnit.test('Basic plugin call based on house number', function (assert) {
+		var done = assert.async();
 
 		$.papi.cache.clear();
-		expect(3);
-		stop();
-
 		$.papi.setApiKey( API_KEY );
 
 		$('#housenr').papi({
@@ -135,18 +132,17 @@
 		$('#housenr').val('29').trigger('change'); // Trigger API call
 
 		setTimeout(function () {
-			ok( $.papi.cache.getItem('4814DC').indexOf('house_number') !== -1, 'House number is successfully passed as argument' );
-			strictEqual( $('#street4')[0].value, 'Reduitlaan', 'Successfully fetched corresponding street' );
-			strictEqual( $('#town4')[0].value, 'Breda', 'Successfully fetched corresponding town' );
-			start();
-		}, 500);
+			assert.ok( $.papi.cache.getItem('4814DC').indexOf('house_number') !== -1, 'House number is successfully passed as argument' );
+			assert.strictEqual( $('#street4')[0].value, 'Reduitlaan', 'Successfully fetched corresponding street' );
+			assert.strictEqual( $('#town4')[0].value, 'Breda', 'Successfully fetched corresponding town' );
+			done();
+		}, 1500);
 	});
 
-	test('Request BAG info via plugin call', function () {
+	QUnit.test('Request BAG info via plugin call', function (assert) {
+		var done = assert.async();
 
 		$.papi.cache.clear();
-		expect(4);
-		stop();
 
 		$('#housenr').papi({
 			bag: true,
@@ -163,17 +159,17 @@
 
 		setTimeout(function () {
 			var res = $.parseJSON( $.papi.cache.getItem('4814DC') );
-			ok( res.hasOwnProperty('bag'), 'Successfully received BAG info in API response' );
-			ok( res.bag.id, 'Successfully received BAG id data' );
-			ok( res.bag.purpose, 'Successfully received BAG purpose data' );
-			ok( res.bag.type, 'Successfully received BAG type data' );
-			start();
-		}, 500);
+			assert.ok( res.hasOwnProperty('bag'), 'Successfully received BAG info in API response' );
+			assert.ok( res.bag.id, 'Successfully received BAG id data' );
+			assert.ok( res.bag.purpose, 'Successfully received BAG purpose data' );
+			assert.ok( res.bag.type, 'Successfully received BAG type data' );
+			done();
+		}, 1500);
 	});
 
-	module('Static API');
+	QUnit.module('Static API');
 
-	test('Basic API lookup', function () {
+	QUnit.test('Basic API lookup', function () {
 		$.papi.cache.clear();
 		expect(3);
 		stop();
@@ -190,28 +186,27 @@
 			});
 	});
 
-	test('Basic API lookup with an invalid zipcode', function () {
+	QUnit.test('Basic API lookup with an invalid zipcode', function (assert) {
+		var done = assert.async();
+		
 		$.papi.cache.clear();
-		expect(2);
-		stop();
-
 		$.papi.setApiKey( API_KEY );
 
 		$.papi
 			.lookup( '1337AA' )
 			.notfound(function (xhr) {
-				ok( 1, 'The .notfound callback is successfully dispatched' );
-				ok( this.hasOwnProperty('setValue'), 'The `this` context of the .notfound callback points to the static API' );
-				start();
+				assert.ok( 1, 'The .notfound callback is successfully dispatched' );
+				assert.ok( this.hasOwnProperty('setValue'), 'The `this` context of the .notfound callback points to the static API' );
+				done();
 			});	
 	});
 
-	module('Validation');
+	QUnit.module('Validation');
 
-	test('Validating several zipcode deviations', function () {
-		ok( $.papi.isValidZipcode('4814 DC'), 'Passing a zipcode with space' );
-		ok( $.papi.isValidZipcode('4814DC'), 'Passing a zipcode without space' );
-		ok( !$.papi.isValidZipcode('XX14DC'), 'Passing an invalid zipcode should return false' );
+	QUnit.test('Validating several zipcode deviations', function (assert) {
+		assert.ok( $.papi.isValidZipcode('4814 DC'), 'Passing a zipcode with space' );
+		assert.ok( $.papi.isValidZipcode('4814DC'), 'Passing a zipcode without space' );
+		assert.ok( !$.papi.isValidZipcode('XX14DC'), 'Passing an invalid zipcode should return false' );
 	});
 
 }(window, window.document));

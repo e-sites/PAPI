@@ -1,6 +1,6 @@
 {
   "name": "PAPI",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "A lightweight jQuery plugin that makes working with the Postcode API easy as pie",
   "homepage": "http://boye.e-sites.nl/papi/",
   "scripts": {
@@ -9,8 +9,8 @@
   },
   "author": {
 	"name": "Boye Oomens",
-	"email": "github@jussay.in",
-	"web": "http://jussay.in/"
+	"email": "papi@boye.io",
+	"web": "http://boye.io/"
   },
   "repository": {
 	"type": "git",
@@ -34,6 +34,8 @@
   "keywords": [
 	"forms",
 	"validation",
-	"validate"
+	"validate",
+	"zipcode",
+	"postal"
   ]
 }

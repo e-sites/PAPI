@@ -3,7 +3,7 @@
  *  A lightweight jQuery plugin that makes working with the Postcode API (@postcodeapi) easy as pie.
  *  
  *  @author  : Boye Oomens <github@boye.io>
- *  @version : 0.4.1
+ *  @version : 0.5.0
  *  @license : MIT
  *  @see     : http://api.postcodeapi.nu/docs/
  *  @see     : http://boye.e-sites.nl/papi/
@@ -40,7 +40,7 @@
 		],
 
 		// Misc constants
-		API_URL = 'http://api.postcodeapi.nu/',
+		API_URL = 'https://api.postcodeapi.nu/',
 		BAG_PARAM = '?view=bag';
 
 	/**
@@ -217,7 +217,7 @@
 		 */
 		lookup: function (zipcode, houseNr, bag) {
 			var zip = zipcode.replace(/\s+/g, ''),
-				url = API_URL + [zipcode, houseNr].join('/') + (bag ? '/' + BAG_PARAM : '');
+				url = API_URL + [zip, houseNr].join('/') + (bag ? '/' + BAG_PARAM : '');
 
 			this.activeZipcode = zip;
 
@@ -231,6 +231,7 @@
 
 			if ( this.proxyUrl ) {
 				url = this.proxyUrl + '?' + $.param({zipcode: zip, houseNr: houseNr, bag: bag, apikey: this.apiKey});
+				ajaxSetup.crossDomain = false;
 			}
 
 			$.extend(ajaxSetup, {

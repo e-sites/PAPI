@@ -8,7 +8,7 @@ module.exports = function (grunt) {
 			banner:
 				'/*!\n' +
 				' * PAPI <%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd, HH:MM") %>)\n' +
-				' * https://github.com/boye/PAPI\n' +
+				' * https://github.com/e-sites/PAPI\n' +
 				' * MIT licensed\n' +
 				' *\n' +
 				' * Copyright (C) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>, <%= pkg.author.web %>\n' +

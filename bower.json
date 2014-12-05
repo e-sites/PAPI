@@ -1,9 +1,9 @@
 {
   "name": "PAPI",
-  "version": "0.5.0",
-  "homepage": "http://boye.e-sites.nl/papi/",
+  "version": "0.5.1",
+  "homepage": "http://github.e-sites.nl/papi/",
   "authors": [
-    "Boye Oomens <papi@boye.io>"
+    "Boye Oomens <github@e-sites.nl>"
   ],
   "description": "A lightweight jQuery plugin that makes working with the Postcode API easy as pie.",
   "main": "jquery.papi.js",

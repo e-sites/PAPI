@@ -1,20 +1,20 @@
 {
   "name": "PAPI",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A lightweight jQuery plugin that makes working with the Postcode API easy as pie",
-  "homepage": "http://boye.e-sites.nl/papi/",
+  "homepage": "http://github.e-sites.nl/papi/",
   "scripts": {
 	"test": "grunt jshint",
 	"start": ""
   },
   "author": {
 	"name": "Boye Oomens",
-	"email": "papi@boye.io",
-	"web": "http://boye.io/"
+	"email": "github@e-sites.nl",
+	"web": "http://e-sites.nl/"
   },
   "repository": {
 	"type": "git",
-	"url": "git://github.com/boye/PAPI.git"
+	"url": "git://github.com/e-sites/PAPI.git"
   },
   "engines": {
 	"node": "~0.8.0"
@@ -28,7 +28,7 @@
   "licenses": [
 	{
 	  "type": "MIT",
-	  "url": "https://github.com/boye/PAPI/blob/master/LICENSE"
+	  "url": "https://github.com/e-sites/PAPI/blob/master/LICENSE"
 	}
   ],
   "keywords": [

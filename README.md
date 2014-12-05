@@ -4,7 +4,7 @@ PAPI
 <p>A lightweight jQuery plugin that makes working with the <a href="http://www.postcodeapi.nu/" target="_blank">Postcode API</a> easy as pie.</p>
 </blockquote>
 
-More info, docmentation and examples @ http://boye.e-sites.nl/papi/
+More info, documentation and examples @ http://github.e-sites.nl/papi/
 
 ##The Postcode API
 The Postcode API is developed by <a href="http://www.freshheads.com/" target="_blank">Freshheads</a>. Check out the docs: <a href="http://api.postcodeapi.nu/docs/" target="_blank">http://api.postcodeapi.nu/docs/</a>
@@ -135,16 +135,7 @@ Tested in the latest versions of Google Chrome, Mozilla Firefox, Opera and Safar
 I have tried to work around this with <code>XDomainRequest</code>, unfortunately <a href="http://blogs.msdn.com/b/ieinternals/archive/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds.aspx" target="_blank">you can't set custom request headers</a> when using XDR, so authorization can't be realized.
 
 <strong>Update:</strong> as from 0.3.0 I have included a PHP proxy to provide support for &lt;IE10 as well. <br>
-Also, if you polyfill <code>JSON.parse</code> / <code>JSON.stringify</code> and <code>window.localStorage</code> you can also support IE7.
-
-##Road map
-<p>You know, the usual stuff ;-)</p>
-<ul>
-	<li>Internal logging / debugging</li>
-	<li>More documation</li>
-	<li>Unit testing</li>
-	<li>More demo's / examples</li>
-</ul>
+Also, if you polyfill <code>JSON.parse</code> / <code>JSON.stringify</code> and <code>window.localStorage</code> you can support even IE7.
 
 ##License
-Copyright (c) 2013 <a href="http://www.linkedin.com/in/boyeoomens">Boye Oomens</a> Licensed under the MIT license.
+Copyright (C) 2014 E-sites, <a href="http://www.e-sites.nl/">http://e-sites.nl/</a> Licensed under the MIT license.

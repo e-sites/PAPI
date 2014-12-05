@@ -164,7 +164,7 @@
 			assert.ok( res.bag.purpose, 'Successfully received BAG purpose data' );
 			assert.ok( res.bag.type, 'Successfully received BAG type data' );
 			done();
-		}, 1500);
+		}, 2500);
 	});
 
 	QUnit.module('Static API');

@@ -22,19 +22,19 @@ Well, for starters, because:
 </ul>
 
 ##Getting started
-First and foremost, include the plugin as such (or lazy-load it):
+First download the plugin via Bower by running `bower install papi` (or download it manually). Second, include the plugin as such (or lazy-load it):
 ```html
 <script src="jquery.min.js"></script>
 <script src="jquery.papi.min.js"></script>
 ```
 
 ###Setting the API key
-It's important you authorize yourself by setting the API key. Use the static .setApiKey method for this:
+It's important you authorize yourself by setting the API key. Use the static `.setApiKey` method for this:
 ```js
 $.papi.setApiKey('4815162342');
 ```
 ##Docs
-Basically, there are two routes you can follow. First, for the lazy folk, you can simply call the plugin on an element and pass some options.
+Basically, there are two routes you can follow. First, you can simply call the plugin on an element and pass some options.
 This way the whole process of fetching and handling the data will be done for you.
 
 Also, you can use the static API to handle the data yourself, this gives you more freedom and possibilities.

@@ -1,9 +1,9 @@
 /*
- *  Project: PAPI - Postcode API 
+ *  Project: PAPI - Postcode API
  *  A lightweight jQuery plugin that makes working with the Postcode API (@postcodeapi) easy as pie.
- *  
+ *
  *  @author  : Boye Oomens <github@e-sites.nl>
- *  @version : 0.5.1
+ *  @version : 0.5.2
  *  @license : MIT
  *  @see     : http://api.postcodeapi.nu/docs/
  *  @see     : http://github.e-sites.nl/papi/
@@ -45,7 +45,7 @@
 
 	/**
 	 * Validates the response data and is called if the request succeeded.
-	 * 
+	 *
 	 * @param {object} body
 	 * @private
 	 */
@@ -61,7 +61,7 @@
 	/**
 	 * Handles the data sent back from the server and invokes the appropriate callback
 	 * Also, stores fetched data in cache
-	 * 
+	 *
 	 * @param {object}  body The actual response body
 	 * @param {Boolean} sim whether we are simulating a response
 	 * @private
@@ -78,7 +78,7 @@
 	/**
 	 * Handles failed requests
 	 * Note: you should consider to log this kind of errors externally
-	 * 
+	 *
 	 * @private
 	 */
 	function _handleError(xhr) {
@@ -88,7 +88,7 @@
 		case 401:
 			error = 'authorization required, please check your api-key';
 			break;
-		case 0:	
+		case 0:
 		case 404:
 			error = 'no additional data found';
 			if ( $.papi._notfound ) {
@@ -110,28 +110,28 @@
 
 		/**
 		 * OK callback
-		 * 
+		 *
 		 * @type {Function}
 		 */
 		_ok: null,
 
 		/**
-		 * Notfound callback 
-		 * 
+		 * Notfound callback
+		 *
 		 * @type {Function}
 		 */
 		_notfound: null,
 
 		/**
 		 * API key
-		 * 
+		 *
 		 * @type {String}
 		 */
 		apiKey: null,
 
 		/**
 		 * Proxy URL (can be used for IE)
-		 * 
+		 *
 		 * @type {String}
 		 */
 		proxyUrl: null,
@@ -139,7 +139,7 @@
 		/**
 		 * Feature detect + local reference (courtesy of Mathias Bynens)
 		 * Used for internal caching based on zipcode
-		 * 
+		 *
 		 * @type {Object}
 		 */
 		cache: (function () {
@@ -156,7 +156,7 @@
 
 		/**
 		 * Small helper to see if the given zipcode is cached
-		 * 
+		 *
 		 * @param  {String}  zipcode
 		 * @return {Boolean}
 		 */
@@ -172,8 +172,8 @@
 
 		/**
 		 * Guess what, it sets the API key
-		 * 
-		 * @param  {String|Object} key 
+		 *
+		 * @param  {String|Object} key
 		 * @return {Object} $.papi
 		 */
 		setApiKey: function (key) {
@@ -194,7 +194,7 @@
 
 		/**
 		 * Sets proxy location
-		 * 
+		 *
 		 * @param  {String} url location of the proxy file
 		 * @return {Object} $.papi
 		 */
@@ -209,7 +209,7 @@
 		 * Initiates the actual request to the API
 		 * If there is a matching resultset in the cache, it'll return it
 		 * Also, a small check is performed to see if we're dealing with a valid zipcode
-		 * 
+		 *
 		 * @param  {String} zipcode
 		 * @param  {String} houseNr
 		 * @param  {Boolean} bag
@@ -248,7 +248,7 @@
 		/**
 		 * Simply stores the 'OK' callback
 		 * When validating the response we decide if it needs to be invoked
-		 * 
+		 *
 		 * @param  {Function} callback
 		 * @return {Object} $.papi
 		 */
@@ -268,7 +268,7 @@
 		/**
 		 * Simply stores the 'notfound' callback
 		 * It is invoked when we get a 404 as answer from the API
-		 * 
+		 *
 		 * @param  {Function} callback
 		 * @return {Object} $.papi
 		 */
@@ -281,7 +281,7 @@
 
 		/**
 		 * Sets the cached value to the given placeholder (HTMLElement) based on the given key
-		 * 
+		 *
 		 * @param  {[type]} key         key that corresponds with the data
 		 * @param  {[type]} placeholder target element
 		 * @return {Object} $.papi
@@ -299,7 +299,7 @@
 		/**
 		 * Fills placeholders with data
 		 * The keys of the placeholders should map to the available properties
-		 * 
+		 *
 		 * @param  {Object} placeholders object with placeholders
 		 * @return {Object} $.papi
 		 */
@@ -315,7 +315,7 @@
 
 		/**
 		 * Runs the given zipcode against a regular expression
-		 * 
+		 *
 		 * @param  {String} zipcode
 		 * @return {Boolean} whether the zipcode is valid or not
 		 */
@@ -327,7 +327,7 @@
 
 	/**
 	 * Plugin wrapper
-	 * 
+	 *
 	 * @param  {Object} options custom plugin settings
 	 * @return {Object} jQuery wrapped set
 	 */

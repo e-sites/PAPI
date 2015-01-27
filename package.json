@@ -1,6 +1,6 @@
 {
   "name": "PAPI",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "A lightweight jQuery plugin that makes working with the Postcode API easy as pie",
   "homepage": "http://github.e-sites.nl/papi/",
   "scripts": {

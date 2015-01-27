@@ -138,4 +138,4 @@ I have tried to work around this with <code>XDomainRequest</code>, unfortunately
 Also, if you polyfill <code>JSON.parse</code> / <code>JSON.stringify</code> and <code>window.localStorage</code> you can support even IE7.
 
 ##License
-Copyright (C) 2014 E-sites, <a href="http://www.e-sites.nl/">http://e-sites.nl/</a> Licensed under the MIT license.
+Copyright (C) 2015 E-sites, <a href="http://www.e-sites.nl/">http://e-sites.nl/</a> Licensed under the MIT license.

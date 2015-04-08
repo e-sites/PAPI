@@ -3,7 +3,7 @@
  *  A lightweight jQuery plugin that makes working with the Postcode API (@postcodeapi) easy as pie.
  *
  *  @author  : Boye Oomens <github@e-sites.nl>
- *  @version : 0.5.3
+ *  @version : 0.5.2
  *  @license : MIT
  *  @see     : http://api.postcodeapi.nu/docs/
  *  @see     : http://github.e-sites.nl/papi/

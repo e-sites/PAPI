@@ -354,9 +354,6 @@
 					zipcode = (o.source.constructor === HTMLInputElement ? o.source.value : $(o.source).val());
 					houseNr = this.value;
 				}
-				
-				// Remove whitespace as API does not accept postal codes with spaces
-				zipcode = zipcode.replace(/\s/, '');
 
 				$.papi
 					.lookup( zipcode, houseNr, o.bag )

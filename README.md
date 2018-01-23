@@ -1,45 +1,41 @@
-PAPI
-====
-<blockquote>
-<p>A lightweight jQuery plugin that makes working with the <a href="http://www.postcodeapi.nu/" target="_blank">Postcode API</a> easy as pie.</p>
-</blockquote>
+# PAPI
+
+> A lightweight jQuery plugin that makes working with the [Postcode API](http://www.postcodeapi.nu/) easy as pie.
 
 More info, documentation and examples @ http://github.e-sites.nl/papi/
 
-##The Postcode API
-The Postcode API is developed by <a href="http://www.freshheads.com/" target="_blank">Freshheads</a>. Check out the docs: <a href="http://api.postcodeapi.nu/docs/" target="_blank">http://api.postcodeapi.nu/docs/</a>
+## The Postcode API
+The Postcode API is developed by [Freshheads](http://www.freshheads.com/). Check out the docs: http://api.postcodeapi.nu/docs/.
 
-##Why PAPI?
+## Why PAPI?
 Well, for starters, because:
 
-<ul>
-<li>it's lightweight (only 0.5kb minified w/ gzip) and developed with high performance in mind;</li>
-<li>it caches results internally, so no unecessary API calls;</li>
-<li>it validates the actual zipcode that is used to fetch the data;</li>
-<li>it handles responses internally so you can focus on processing the data in the available callbacks;</li>
-<li>it comes with a fully fledged static API (<code>$.papi</code>), so you can write your custom logic as well</li>
-<li>it offers internal error handling (401, 404 and 500)</li>
-</ul>
+* it's lightweight (only 0.5kb minified w/ gzip) and developed with high performance in mind;
+* it caches results internally, so no unecessary API calls;
+* it validates the actual zipcode that is used to fetch the data;
+* it handles responses internally so you can focus on processing the data in the available callbacks;
+* it comes with a fully fledged static API (`$.papi`), so you can write your custom logic as well
+* it offers internal error handling (401, 404 and 500)
 
-##Getting started
+## Getting started
 First download the plugin via Bower by running `bower install papi` (or download it manually). Second, include the plugin as such (or lazy-load it):
 ```html
 <script src="jquery.min.js"></script>
 <script src="jquery.papi.min.js"></script>
 ```
 
-###Setting the API key
+### Setting the API key
 It's important you authorize yourself by setting the API key. Use the static `.setApiKey` method for this:
 ```js
 $.papi.setApiKey('4815162342');
 ```
-##Docs
+## Docs
 Basically, there are two routes you can follow. First, you can simply call the plugin on an element and pass some options.
 This way the whole process of fetching and handling the data will be done for you.
 
 Also, you can use the static API to handle the data yourself, this gives you more freedom and possibilities.
 
-###Plugin
+### Plugin
 Example plugin call:
 
 ```js
@@ -52,7 +48,8 @@ $('#housenr').papi({
     }
 });
 ```
-###Options</h4>
+
+### Options
 <table class="table table-bordered table-striped bs-table">
 	<colgroup>
 		<col class="col-lg-1">
@@ -105,37 +102,40 @@ $('#housenr').papi({
 		</tr>
 	</tbody>
 </table>
-<h3>Static API</h3>
-<h4><code>.setApiKey(apikey)</code></h4>
-<p>Guess what, it sets the API key for authorization :-)</p>
-<h4><code>.lookup(zipcode, [houseNr], [bag])</code></h4>
-<p>Initiates the actual <code>GET</code> request to the API.</p>
-<h4><code>.ok(callback)</code></h4>
-<p>
-	When all went good, this callback will be invoked. <br>
-	The data will be available through the first argument. The <code>this</code> context will point to the <code>$.papi</code> object.
-</p>
-<h4><code>.notfound(callback)</code></h4>
-<p>
-	When no results are found, the API will return a 404 and this callback will be invoked.
-</p>
-<h4><code>.setValue(key, placeholder)</code></h4>
-<p>
-	Fills the given placeholder with available data
-</p>
-<h4><code>.setValues(placeholders)</code></h4>
-<p>
-	Fills all placeholders with available data.
-</p>
-<h4><code>.isValidZipcode(zipcode)</code></h4>
-<p>Small helper to see if the given zipcode is valid</p>
 
-##Browser support
-Tested in the latest versions of Google Chrome, Mozilla Firefox, Opera and Safari. As for Internet Explorer, it only works in IE10+ due to the lack of proper CORS functionality.
-I have tried to work around this with <code>XDomainRequest</code>, unfortunately <a href="http://blogs.msdn.com/b/ieinternals/archive/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds.aspx" target="_blank">you can't set custom request headers</a> when using XDR, so authorization can't be realized.
+### Static API
 
-<strong>Update:</strong> as from 0.3.0 I have included a PHP proxy to provide support for &lt;IE10 as well. <br>
-Also, if you polyfill <code>JSON.parse</code> / <code>JSON.stringify</code> and <code>window.localStorage</code> you can support even IE7.
+#### `.setApiKey(apikey)`
+Guess what, it sets the API key for authorization :-)
 
-##License
-Copyright (C) 2015 E-sites, <a href="http://www.e-sites.nl/">http://e-sites.nl/</a> Licensed under the MIT license.
+#### `.lookup(zipcode, [houseNr], [bag])`
+Initiates the actual `GET` request to the API.
+
+#### `.ok(callback)`
+When all went good, this callback will be invoked.
+The data will be available through the first argument. The `this` context will point to the `$.papi` object.
+
+#### `.notfound(callback)`
+When no results are found, the API will return a 404 and this callback will be invoked.
+
+#### `.setValue(key, placeholder)`
+Fills the given placeholder with available data
+
+#### `.setValues(placeholders)`
+Fills all placeholders with available data.
+
+#### `.isValidZipcode(zipcode)`
+Small helper to see if the given zipcode is valid
+
+## Browser support
+Tested in the latest versions of Google Chrome, Mozilla Firefox, Opera and Safari. As for Internet Explorer, it only works
+in IE10+ due to the lack of proper CORS functionality. I have tried to work around this with `XDomainRequest`, unfortunately
+[you can't set custom request headers](http://blogs.msdn.com/b/ieinternals/archive/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds.aspx)
+when using XDR, so authorization can't be realized.
+
+**Update:** as from 0.3.0 I have included a PHP proxy to provide support for &lt;IE10 as well. 
+
+Also, if you polyfill `JSON.parse` / `JSON.stringify` and `window.localStorage` you can support even IE7.
+
+## License
+Copyright (C) 2015 E-sites, http://www.e-sites.nl/ Licensed under the MIT license.
